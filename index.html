@@ -29,8 +29,8 @@
     }
 
     @keyframes floatDown {
-      0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-      100% { opacity: 0; transform: translateY(120px) scale(1.4) rotate(25deg); }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(80px) scale(1.2); }
     }
 
     @keyframes rocketLaunch {
@@ -38,22 +38,11 @@
       100% { opacity: 0; transform: translateY(-110vh) scale(1.2); }
     }
 
-    @keyframes screenShake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-6px); }
-      40% { transform: translateX(6px); }
-      60% { transform: translateX(-4px); }
-      80% { transform: translateX(4px); }
-    }
-
-    .shake { animation: screenShake 0.35s ease; }
-
     .thumb-down {
       position: fixed;
-      font-size: 2rem;
       pointer-events: none;
       z-index: 9999;
-      animation: floatDown 1s ease-out forwards;
+      animation: floatDown 0.9s ease-out forwards;
     }
 
     .rocket {
@@ -70,43 +59,247 @@
 
     #noButton {
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='24'%3E👎%3C/text%3E%3C/svg%3E") 4 4, not-allowed;
+      transition: left 0.15s ease, top 0.15s ease;
+    }
+
+    #noButton.runaway {
+      position: fixed;
+      z-index: 100;
+    }
+
+    #imageWrapper {
+      width: 280px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #imageDisplay {
-      max-width: 280px;
-      max-height: 280px;
-      width: auto;
-      height: auto;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
     }
+
+    #yesButton {
+      transform-origin: center;
+      transition: transform 0.3s ease;
+    }
+
+    #buttonArea {
+      min-height: 80px;
+      width: 100%;
+      position: relative;
+    }
+
+    .easter-egg {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 6px;
+      opacity: 0.45;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 10;
+    }
+
+    .easter-egg:hover {
+      opacity: 0.95;
+      transform: scale(1.08);
+    }
+
+    .pick-card {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pick-card:hover {
+      border-color: #f472b6;
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(244, 114, 182, 0.2);
+    }
+
+    .pick-card.selected {
+      border-color: #db2777;
+      background: linear-gradient(135deg, #fdf2f8 0%, #fff 100%);
+      box-shadow: 0 4px 14px rgba(219, 39, 119, 0.25);
+    }
+
+    .pick-card.secret {
+      border-style: dashed;
+      opacity: 0.85;
+    }
+
+    .pick-card.secret:hover {
+      opacity: 1;
+    }
+
+    .back-btn {
+      font-size: 0.875rem;
+      color: #db2777;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    .topic-card {
+      border: 2px solid #fbcfe8;
+      border-radius: 0.75rem;
+      background: #fdf2f8;
+      overflow: hidden;
+    }
+
+    .topic-header {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .topic-header:hover {
+      background: #fce7f3;
+    }
+
+    .topic-chevron {
+      transition: transform 0.2s ease;
+      color: #db2777;
+      flex-shrink: 0;
+    }
+
+    .topic-card.open .topic-chevron {
+      transform: rotate(180deg);
+    }
+
+    .topic-body {
+      display: none;
+      padding: 0 16px 14px;
+      border-top: 1px solid #fbcfe8;
+    }
+
+    .topic-card.open .topic-body {
+      display: block;
+    }
+
+    .topic-geral {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.5;
+      padding: 12px 0;
+      font-style: italic;
+    }
+
+    .place-option {
+      cursor: pointer;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 0.75rem;
+      border: 2px solid #fbcfe8;
+      background: white;
+      transition: all 0.2s ease;
+    }
+
+    .place-option:last-child {
+      margin-bottom: 0;
+    }
+
+    .place-option:hover {
+      border-color: #f472b6;
+      box-shadow: 0 2px 10px rgba(244, 114, 182, 0.15);
+    }
+
+    .place-option.selected {
+      border-color: #db2777;
+      background: linear-gradient(135deg, #fdf2f8 0%, #fff 100%);
+    }
+
+    #confirmFooter {
+      border-top: 1px solid #fbcfe8;
+      padding-top: 16px;
+    }
+
+    #confirmOptionBtn {
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    #confirmOptionBtn:hover {
+      transform: scale(1.02);
+      background: #22c55e;
+    }
+
+    #heartsOverlay {
+      background: rgba(255, 240, 245, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    #giantHeart {
+      animation: heartPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.5));
+    }
+
+    @keyframes heartPop {
+      0% { opacity: 0; transform: scale(0); }
+      70% { transform: scale(1.15); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes heartFloat {
+      0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-120vh) scale(0.6) rotate(25deg); }
+    }
+
+    .floating-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 101;
+      animation: heartFloat linear forwards;
+    }
   </style>
-  <link rel="preload" as="image" href="./images/salve%201.jpg">
+  <link rel="preload" as="image" href="./images/img1.jpg">
 </head>
 <body class="gradient-background">
-  <main id="mainContent" class="flex items-center justify-center min-h-screen px-4">
+  <main class="flex items-center justify-center min-h-screen px-4">
     <section class="flex flex-col items-center p-4 max-w-lg w-full">
-      <img
-        id="imageDisplay"
-        src="./images/salve 1.jpg"
-        alt="Emoji charmoso"
-        class="rounded-md drop-shadow-md bg-white/60 p-2"
-      />
+      <div id="imageWrapper" class="rounded-md drop-shadow-md bg-white/60 p-2 mb-2">
+        <img
+          id="imageDisplay"
+          src="./images/img1.jpg"
+          alt="Emoji charmoso"
+        />
+      </div>
       <h1 id="encontroQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4 text-center leading-tight">
-        Bora sair comigo no fim de semana? 🍕
+        Topa sair comigo no fim de semana?
       </h1>
-      <p id="subtexto" class="text-[#92400e] text-center mb-2 italic opacity-80">
+      <p id="subtexto" class="text-[#92400e] text-center mb-2 italic opacity-80 min-h-[28px]">
         (prometo não contar piada ruim... talvez)
       </p>
-      <div id="responseButtons" class="flex gap-4 pt-5 items-center flex-wrap justify-center">
+      <div id="buttonArea" class="flex gap-4 pt-5 items-center justify-center flex-wrap">
         <button
           id="yesButton"
-          class="bounce inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium cursor-pointer px-4 py-2 bg-green-500 text-white transition-all duration-300 ease-in-out hover:bg-green-400 min-h-12 min-w-[75px]"
+          class="bounce inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium cursor-pointer px-4 py-2 bg-green-500 text-white hover:bg-green-400 min-h-12 min-w-[75px]"
         >
           Sim! 🎉
         </button>
         <button
           id="noButton"
-          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium px-4 py-2 bg-red-500 text-white transition-colors hover:bg-red-700 h-12 min-w-[75px]"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium px-4 py-2 bg-red-500 text-white hover:bg-red-700 h-12 min-w-[75px] shrink-0"
         >
           Não
         </button>
@@ -117,52 +310,124 @@
   <div id="calendarModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
     <div class="calendar-overlay bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border-2 border-pink-200">
       <div class="bg-gradient-to-r from-pink-400 to-rose-400 px-6 py-5 text-white text-center">
-        <p class="text-sm font-medium opacity-90">🗓️ Escolhe o melhor horário!</p>
-        <h2 id="calendarTitle" class="text-2xl font-bold mt-1">Fim de semana</h2>
-        <p class="text-sm mt-1 opacity-90">Marca aí antes que eu fique ansioso demais</p>
+        <p class="text-sm font-medium opacity-90" id="calendarSubtitle">🗓️ Escolhe o dia!</p>
+        <h2 id="calendarTitle" class="text-2xl font-bold mt-1">7, 8 ou 9 de ago</h2>
+        <p class="text-sm mt-1 opacity-90" id="calendarHint">Marca aí antes que eu fique ansioso demais</p>
       </div>
-      <div id="calendarDays" class="p-5 space-y-4 max-h-[60vh] overflow-y-auto"></div>
+      <div id="calendarDays" class="p-5 space-y-3 max-h-[55vh] overflow-y-auto"></div>
+      <div id="confirmFooter" class="hidden px-5 pb-5">
+        <p id="pendingSelection" class="text-sm text-gray-600 text-center mb-3 leading-relaxed"></p>
+        <button
+          id="confirmOptionBtn"
+          type="button"
+          class="w-full py-3 rounded-xl bg-green-500 text-white font-bold text-lg shadow-md hover:bg-green-400"
+        >
+          Confirmar opção ✨
+        </button>
+      </div>
+      <p id="confirmMessage" class="hidden text-center text-sm text-[#bd1e59] font-medium px-5 pb-5"></p>
     </div>
+  </div>
+
+  <div id="heartsOverlay" class="hidden fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+    <span id="giantHeart">❤️</span>
   </div>
 
   <script>
     (() => {
-      // ── PLACEHOLDERS — edite aqui depois ──────────────────
-      const CALENDAR_PLACEHOLDERS = {
-        sabado: {
-          horarios: ['[HORÁRIO 1]', '[HORÁRIO 2]', '[HORÁRIO 3]'],
-          opcoes:   ['[OPÇÃO 1]',   '[OPÇÃO 2]',   '[OPÇÃO 3]'],
+      const DATAS = [
+        { dia: 7, label: 'Sexta',  emoji: '🌙' },
+        { dia: 8, label: 'Sábado', emoji: '📅' },
+        { dia: 9, label: 'Domingo', emoji: '🌤️' },
+      ];
+
+      const CATEGORIAS = [
+        {
+          titulo: 'Bares estéticos',
+          emoji: '📸',
+          descricaoGeral: 'Bares legais e esteticamente bonitos pra tirar foto boa pro dump mensal.',
+          lugares: [
+            {
+              nome: 'Lotus Sunset 55+',
+              descricao: 'Golden hour, vista bonita e clima perfeito pra foto que salva o feed do mês.',
+            },
+            {
+              nome: 'Janela Bar',
+              descricao: 'Ambiente estiloso, luz boa e drinks que pedem um close antes do primeiro gole.',
+            },
+          ],
         },
-        domingo: {
-          horarios: ['[HORÁRIO 1]', '[HORÁRIO 2]', '[HORÁRIO 3]'],
-          opcoes:   ['[OPÇÃO 1]',   '[OPÇÃO 2]',   '[OPÇÃO 3]'],
+        {
+          titulo: 'Bar de jazz',
+          emoji: '🎷',
+          descricaoGeral: 'Bar de jazz pra ouvir Frank Sinatra e discutir política tomando xeque-mate.',
+          lugares: [
+            {
+              nome: 'Dizzy Bar',
+              descricao: 'Jazz ao vivo, Sinatra no ar e xeque-mate gelado enquanto a conversa esquenta.',
+            },
+            {
+              nome: 'O Pensador Bar',
+              descricao: 'Música boa, clima intimista e mesa pronta pra debate filosófico até tarde.',
+            },
+          ],
         },
+        {
+          titulo: 'Underground',
+          emoji: '🤘',
+          descricaoGeral: 'Lugares undergrounds pra tirar foto com a cybershot de estimação e talvez perder a perna num mosh pit.',
+          lugares: [
+            {
+              nome: '92 Graus',
+              descricao: 'Calor, mosh pit e flash da cybershot no meio do caos — puro documento de guerra.',
+            },
+            {
+              nome: 'Belvedere',
+              descricao: 'Cantinho underground com estética crua e noite que vira história no cartão de memória.',
+            },
+          ],
+        },
+      ];
+
+      const OPCAO_SECRETA = {
+        nome: 'Balaios Motoclube — Sede',
+        descricao: 'Invadir o motoclube, jogar arcade e sinuca enquanto vê os quadros de gente maluca que passou por lá.',
       };
-      // ─────────────────────────────────────────────────────
 
       const yesButton = document.getElementById('yesButton');
       const noButton = document.getElementById('noButton');
       const imageDisplay = document.getElementById('imageDisplay');
       const encontroQuestion = document.getElementById('encontroQuestion');
       const subtexto = document.getElementById('subtexto');
-      const responseButtons = document.getElementById('responseButtons');
-      const mainContent = document.getElementById('mainContent');
+      const buttonArea = document.getElementById('buttonArea');
       const calendarModal = document.getElementById('calendarModal');
       const calendarDays = document.getElementById('calendarDays');
       const calendarTitle = document.getElementById('calendarTitle');
+      const calendarSubtitle = document.getElementById('calendarSubtitle');
+      const calendarHint = document.getElementById('calendarHint');
+      const confirmMessage = document.getElementById('confirmMessage');
+      const confirmFooter = document.getElementById('confirmFooter');
+      const pendingSelection = document.getElementById('pendingSelection');
+      const confirmOptionBtn = document.getElementById('confirmOptionBtn');
+      const heartsOverlay = document.getElementById('heartsOverlay');
+      const giantHeart = document.getElementById('giantHeart');
 
-      const GROWTH_PER_CLICK = 35;
-      const FONT_GROWTH_PER_CLICK = 25;
+      let selectedData = null;
+      let pendingChoice = null;
+
+      const HEART_COLORS = ['#ef4444', '#ec4899', '#f472b6', '#fb923c', '#a855f7', '#f43f5e', '#e11d48', '#db2777', '#f97316', '#be185d'];
+
       const MAX_NO_CLICKS = 5;
+      const RUNAWAY_THRESHOLD = 100;
 
       const IMAGE_PATHS = [
-        './images/salve 1.jpg',
-        './images/salve 2.jpg',
-        './images/salve 3.webp',
-        './images/salve 4.webp',
-        './images/imagem 5.jpg',
-        './images/salve 3.webp',
-        './images/imagem 5.jpg',
+        './images/img1.jpg',
+        './images/img2.jpg',
+        './images/img3.webp',
+        './images/img4.webp',
+        './images/img5.jpg',
+        './images/img3.webp',
+        './images/img5.jpg',
       ];
 
       const NO_BUTTON_MESSAGES = [
@@ -184,27 +449,26 @@
       ];
 
       let noClickCount = 0;
-      let buttonHeight = 48;
-      let buttonWidth = 80;
-      let fontSize = 20;
-
-      const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+      let isRunawayMode = false;
 
       function setImage(index) {
-        imageDisplay.src = IMAGE_PATHS[index];
+        const path = IMAGE_PATHS[index];
+        const img = new Image();
+        img.onload = () => { imageDisplay.src = path; };
+        img.onerror = () => { imageDisplay.alt = 'Imagem não encontrada'; };
+        img.src = path;
       }
 
       function spawnThumbsDown(x, y) {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 5; i++) {
           const el = document.createElement('span');
           el.textContent = '👎';
           el.className = 'thumb-down';
-          el.style.left = `${x + (Math.random() - 0.5) * 120}px`;
-          el.style.top = `${y + (Math.random() - 0.5) * 40}px`;
-          el.style.fontSize = `${1.5 + Math.random() * 1.5}rem`;
-          el.style.animationDuration = `${0.7 + Math.random() * 0.6}s`;
+          el.style.left = `${x + (Math.random() - 0.5) * 80}px`;
+          el.style.top = `${y + (Math.random() - 0.5) * 30}px`;
+          el.style.fontSize = `${1.2 + Math.random()}rem`;
           document.body.appendChild(el);
-          setTimeout(() => el.remove(), 1500);
+          setTimeout(() => el.remove(), 1000);
         }
       }
 
@@ -217,91 +481,245 @@
             el.style.left = `${10 + Math.random() * 80}vw`;
             el.style.bottom = '-40px';
             el.style.fontSize = `${2 + Math.random() * 2}rem`;
-            el.style.animationDuration = `${1.2 + Math.random() * 1}s`;
+            el.style.animationDuration = `${1.2 + Math.random()}s`;
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 2500);
           }, i * 120);
         }
       }
 
-      function getNextWeekend() {
-        const today = new Date();
-        const day = today.getDay();
-        const saturday = new Date(today);
-
-        if (day === 0) saturday.setDate(today.getDate() + 6);
-        else if (day !== 6) saturday.setDate(today.getDate() + (6 - day));
-
-        const sunday = new Date(saturday);
-        sunday.setDate(saturday.getDate() + 1);
-        return [saturday, sunday];
+      function growYesButton() {
+        yesButton.classList.remove('bounce');
+        const scale = Math.min(1 + noClickCount * 0.18, 2.2);
+        yesButton.style.transform = `scale(${scale})`;
       }
 
-      function buildCalendar() {
-        const [saturday, sunday] = getNextWeekend();
-        calendarTitle.textContent = `${saturday.getDate()} — ${sunday.getDate()} de ${MESES[saturday.getMonth()]}`;
+      function moveNoButtonAway(fromX, fromY) {
+        const w = noButton.offsetWidth;
+        const h = noButton.offsetHeight;
+        const padding = 16;
+
+        let newX, newY;
+        let attempts = 0;
+
+        do {
+          newX = padding + Math.random() * (window.innerWidth - w - padding * 2);
+          newY = padding + Math.random() * (window.innerHeight - h - padding * 2);
+          attempts++;
+        } while (
+          attempts < 10 &&
+          Math.hypot(fromX - (newX + w / 2), fromY - (newY + h / 2)) < RUNAWAY_THRESHOLD * 1.5
+        );
+
+        noButton.style.left = `${newX}px`;
+        noButton.style.top = `${newY}px`;
+      }
+
+      function enableRunawayMode() {
+        if (isRunawayMode) return;
+        isRunawayMode = true;
+
+        const rect = noButton.getBoundingClientRect();
+        noButton.classList.add('runaway');
+        noButton.style.left = `${rect.left}px`;
+        noButton.style.top = `${rect.top}px`;
+
+        document.addEventListener('mousemove', onMouseMoveRunaway);
+      }
+
+      function onMouseMoveRunaway(e) {
+        const rect = noButton.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+
+        if (dist < RUNAWAY_THRESHOLD) {
+          moveNoButtonAway(e.clientX, e.clientY);
+        }
+      }
+
+      function hideConfirmFooter() {
+        pendingChoice = null;
+        confirmFooter.classList.add('hidden');
+        confirmMessage.classList.add('hidden');
+      }
+
+      function showPendingChoice(dia, label, nome) {
+        pendingChoice = { dia, label, nome };
+        pendingSelection.textContent = `${label}, ${dia} de ago — ${nome}`;
+        confirmFooter.classList.remove('hidden');
+        confirmMessage.classList.add('hidden');
+        calendarHint.textContent = 'Confirma aí embaixo!';
+      }
+
+      function launchHeartCelebration() {
+        calendarModal.classList.add('hidden');
+        heartsOverlay.classList.remove('hidden');
+        giantHeart.style.fontSize = '120px';
+
+        for (let i = 0; i < 60; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('span');
+            heart.textContent = '❤';
+            heart.className = 'floating-heart';
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.bottom = '-40px';
+            heart.style.fontSize = `${16 + Math.random() * 40}px`;
+            heart.style.color = HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)];
+            heart.style.animationDuration = `${2 + Math.random() * 3}s`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5500);
+          }, i * 80);
+        }
+
+        setTimeout(() => {
+          heartsOverlay.classList.add('hidden');
+          encontroQuestion.textContent = 'Combinado!! Te vejo lá 💕';
+          subtexto.textContent = `${pendingChoice.label}, ${pendingChoice.dia} de ago — ${pendingChoice.nome}`;
+        }, 4000);
+      }
+
+      confirmOptionBtn.addEventListener('click', () => {
+        if (!pendingChoice) return;
+        confirmFooter.classList.add('hidden');
+        confirmMessage.textContent = `Marcado! ${pendingChoice.label}, ${pendingChoice.dia} de ago — ${pendingChoice.nome} 🎉`;
+        confirmMessage.classList.remove('hidden');
+        launchHeartCelebration();
+      });
+
+      function buildDatesView() {
+        selectedData = null;
+        hideConfirmFooter();
+        calendarSubtitle.textContent = '🗓️ Escolhe o dia!';
+        calendarTitle.textContent = '7, 8 ou 9 de ago';
+        calendarHint.textContent = 'Marca aí antes que eu fique ansioso demais';
         calendarDays.innerHTML = '';
 
-        const days = [
-          { date: saturday, label: 'Sábado', key: 'sabado', emoji: '📅' },
-          { date: sunday, label: 'Domingo', key: 'domingo', emoji: '🌤️' },
-        ];
-
-        days.forEach(({ date, label, key, emoji }) => {
-          const cfg = CALENDAR_PLACEHOLDERS[key];
-          const card = document.createElement('div');
-          card.className = 'rounded-2xl border-2 border-pink-100 bg-pink-50/50 p-4';
-
-          card.innerHTML = `
-            <div class="flex items-center gap-2 mb-3">
+        DATAS.forEach(({ dia, label, emoji }) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pick-card w-full text-left p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50';
+          btn.innerHTML = `
+            <div class="flex items-center gap-3">
               <span class="text-2xl">${emoji}</span>
               <div>
-                <p class="font-bold text-[#bd1e59]">${label}</p>
-                <p class="text-sm text-pink-600">${date.getDate()} de ${MESES[date.getMonth()]}</p>
+                <p class="font-bold text-[#bd1e59] text-lg">${label}</p>
+                <p class="text-pink-500 text-sm">${dia} de agosto</p>
               </div>
             </div>
           `;
+          btn.addEventListener('click', () => buildPlacesView(dia, label));
+          calendarDays.appendChild(btn);
+        });
+      }
 
-          cfg.horarios.forEach((horario, i) => {
-            const row = document.createElement('div');
-            row.className = 'p-3 mb-2 last:mb-0 rounded-xl border-2 border-pink-200 bg-white';
-            row.innerHTML = `
-              <span class="block font-bold text-pink-500 text-sm">${horario}</span>
-              <span class="block text-gray-600 text-sm mt-0.5">${cfg.opcoes[i] || '[OPÇÃO]'}</span>
+      function selectPlace(dia, label, nome) {
+        document.querySelectorAll('.place-option, .pick-card.secret').forEach((c) => c.classList.remove('selected'));
+        showPendingChoice(dia, label, nome);
+      }
+
+      function buildPlacesView(dia, label) {
+        selectedData = { dia, label };
+        hideConfirmFooter();
+        calendarSubtitle.textContent = '📍 Onde vamos?';
+        calendarTitle.textContent = `${label}, ${dia} de ago`;
+        calendarHint.textContent = 'Abre um tópico e escolhe o lugar';
+        calendarDays.innerHTML = '';
+
+        const back = document.createElement('button');
+        back.type = 'button';
+        back.className = 'back-btn';
+        back.textContent = '← Voltar às datas';
+        back.addEventListener('click', buildDatesView);
+        calendarDays.appendChild(back);
+
+        CATEGORIAS.forEach((cat) => {
+          const topic = document.createElement('div');
+          topic.className = 'topic-card';
+
+          const header = document.createElement('button');
+          header.type = 'button';
+          header.className = 'topic-header';
+          header.innerHTML = `
+            <span class="font-bold text-[#bd1e59]">${cat.emoji} ${cat.titulo}</span>
+            <span class="topic-chevron">▼</span>
+          `;
+
+          const body = document.createElement('div');
+          body.className = 'topic-body';
+          body.innerHTML = `<p class="topic-geral">${cat.descricaoGeral}</p>`;
+
+          cat.lugares.forEach((lugar) => {
+            const opt = document.createElement('div');
+            opt.className = 'place-option';
+            opt.innerHTML = `
+              <p class="font-bold text-[#bd1e59] text-sm">${lugar.nome}</p>
+              <p class="text-gray-600 text-sm mt-1 leading-relaxed">${lugar.descricao}</p>
             `;
-            card.appendChild(row);
+            opt.addEventListener('click', (e) => {
+              e.stopPropagation();
+              document.querySelectorAll('.place-option').forEach((c) => c.classList.remove('selected'));
+              opt.classList.add('selected');
+              selectPlace(dia, label, lugar.nome);
+            });
+            body.appendChild(opt);
           });
 
-          calendarDays.appendChild(card);
+          header.addEventListener('click', () => {
+            const wasOpen = topic.classList.contains('open');
+            document.querySelectorAll('.topic-card').forEach((t) => t.classList.remove('open'));
+            if (!wasOpen) topic.classList.add('open');
+          });
+
+          topic.appendChild(header);
+          topic.appendChild(body);
+          calendarDays.appendChild(topic);
         });
+
+        const secretBtn = document.createElement('button');
+        secretBtn.type = 'button';
+        secretBtn.className = 'pick-card secret w-full text-left p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50 mt-1';
+        secretBtn.innerHTML = `
+          <p class="font-bold text-[#bd1e59]">🤫 Opção secreta — ${OPCAO_SECRETA.nome}</p>
+          <p class="text-gray-600 text-sm mt-1 leading-relaxed">${OPCAO_SECRETA.descricao}</p>
+        `;
+        secretBtn.addEventListener('click', () => {
+          document.querySelectorAll('.place-option, .pick-card.secret').forEach((c) => c.classList.remove('selected'));
+          secretBtn.classList.add('selected');
+          selectPlace(dia, label, OPCAO_SECRETA.nome);
+        });
+        calendarDays.appendChild(secretBtn);
+      }
+
+      function buildCalendar() {
+        buildDatesView();
       }
 
       noButton.addEventListener('click', (e) => {
         spawnThumbsDown(e.clientX, e.clientY);
-        mainContent.classList.add('shake');
-        setTimeout(() => mainContent.classList.remove('shake'), 350);
 
-        if (noClickCount >= MAX_NO_CLICKS) return;
+        if (noClickCount >= MAX_NO_CLICKS) {
+          moveNoButtonAway(e.clientX, e.clientY);
+          return;
+        }
 
         noClickCount++;
         setImage(noClickCount);
         subtexto.textContent = SUBTEXTOS[noClickCount] || SUBTEXTOS[SUBTEXTOS.length - 1];
-
-        buttonHeight += GROWTH_PER_CLICK;
-        buttonWidth += GROWTH_PER_CLICK;
-        fontSize += FONT_GROWTH_PER_CLICK;
-
-        yesButton.style.height = `${buttonHeight}px`;
-        yesButton.style.width = `${buttonWidth}px`;
-        yesButton.style.fontSize = `${fontSize}px`;
         noButton.textContent = NO_BUTTON_MESSAGES[noClickCount];
+        growYesButton();
+
+        if (noClickCount >= MAX_NO_CLICKS) {
+          enableRunawayMode();
+        }
       });
 
       yesButton.addEventListener('click', () => {
+        document.removeEventListener('mousemove', onMouseMoveRunaway);
         setImage(6);
         encontroQuestion.textContent = 'Ebaa!! Vamos marcar então! 🎊';
-        subtexto.textContent = 'Escolhe o horário perfeito aí embaixo 👇';
-        responseButtons.style.display = 'none';
+        subtexto.textContent = 'Escolhe o dia e o rolê aí embaixo 👇';
+        buttonArea.style.display = 'none';
 
         launchRockets();
 
@@ -318,5 +736,6 @@
       });
     })();
   </script>
+  <img src="./images/julian.jpg" alt="" class="easter-egg" title="🎸">
 </body>
 </html>
