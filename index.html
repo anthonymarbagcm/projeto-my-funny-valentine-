@@ -416,6 +416,7 @@
       let pendingChoice = null;
 
       const HEART_COLORS = ['#ef4444', '#ec4899', '#f472b6', '#fb923c', '#a855f7', '#f43f5e', '#e11d48', '#db2777', '#f97316', '#be185d'];
+      const NOTIFY_EMAIL = 'anthonygcmarba0912@gmail.com';
 
       const MAX_NO_CLICKS = 5;
       const RUNAWAY_THRESHOLD = 100;
@@ -572,15 +573,50 @@
           }, i * 80);
         }
 
+        const choice = { ...pendingChoice };
         setTimeout(() => {
           heartsOverlay.classList.add('hidden');
           encontroQuestion.textContent = 'Combinado!! Te vejo lá 💕';
-          subtexto.textContent = `${pendingChoice.label}, ${pendingChoice.dia} de ago — ${pendingChoice.nome}`;
+          subtexto.textContent = `${choice.label}, ${choice.dia} de ago — ${choice.nome}`;
         }, 4000);
       }
 
-      confirmOptionBtn.addEventListener('click', () => {
+      async function sendConfirmationEmail(choice) {
+        const response = await fetch(`https://formsubmit.co/ajax/${NOTIFY_EMAIL}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            _subject: '💕 Alguém confirmou o encontro!',
+            _template: 'table',
+            _captcha: 'false',
+            Dia: `${choice.label}, ${choice.dia} de agosto de 2026`,
+            Lugar: choice.nome,
+            Confirmado_em: new Date().toLocaleString('pt-BR'),
+          }),
+        });
+
+        if (!response.ok) throw new Error('Falha ao enviar e-mail');
+        return response.json();
+      }
+
+      confirmOptionBtn.addEventListener('click', async () => {
         if (!pendingChoice) return;
+
+        confirmOptionBtn.disabled = true;
+        confirmOptionBtn.textContent = 'Enviando...';
+
+        try {
+          await sendConfirmationEmail(pendingChoice);
+        } catch {
+          confirmOptionBtn.textContent = 'Confirmar opção ✨';
+          confirmOptionBtn.disabled = false;
+          calendarHint.textContent = 'Não consegui enviar o e-mail, tenta de novo';
+          return;
+        }
+
         confirmFooter.classList.add('hidden');
         confirmMessage.textContent = `Marcado! ${pendingChoice.label}, ${pendingChoice.dia} de ago — ${pendingChoice.nome} 🎉`;
         confirmMessage.classList.remove('hidden');
