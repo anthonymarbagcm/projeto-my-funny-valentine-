@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A cute Valentine's Day page to ask someone to be your Valentine!">
+  <meta name="description" content="Um pedido de encontro engraçado e interativo!">
   <meta name="theme-color" content="#ffd0e5">
-  <title>Valentine's Day</title>
+  <title>Convite pra sair 🌮</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     .gradient-background {
       background: linear-gradient(180deg, #ffd0e5 0%, #ffe8f2 36%, #ffffff 100%);
@@ -19,114 +18,275 @@
     }
 
     @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-20px);
-      }
-      60% {
-        transform: translateY(-10px);
-      }
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes floatDown {
+      0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(120px) scale(1.4) rotate(25deg); }
+    }
+
+    @keyframes rocketLaunch {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-110vh) scale(1.2); }
+    }
+
+    @keyframes screenShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake { animation: screenShake 0.35s ease; }
+
+    .thumb-down {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatDown 1s ease-out forwards;
+    }
+
+    .rocket {
+      position: fixed;
+      font-size: 2.5rem;
+      pointer-events: none;
+      z-index: 9999;
+      animation: rocketLaunch 1.8s ease-in forwards;
+    }
+
+    .calendar-overlay {
+      animation: popIn 0.4s ease-out forwards;
+    }
+
+    #noButton {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='24'%3E👎%3C/text%3E%3C/svg%3E") 4 4, not-allowed;
+    }
+
+    #imageDisplay {
+      max-width: 280px;
+      max-height: 280px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
     }
   </style>
-  <!-- Preload images so transitions feel instant -->
-  <link rel="preload" as="image" href="./images/image1.gif">
-  <link rel="preload" as="image" href="./images/image2.gif">
-  <link rel="preload" as="image" href="./images/image3.gif">
-  <link rel="preload" as="image" href="./images/image4.gif">
-  <link rel="preload" as="image" href="./images/image5.gif">
-  <link rel="preload" as="image" href="./images/image6.gif">
-  <link rel="preload" as="image" href="./images/image7.gif">
+  <link rel="preload" as="image" href="./images/salve%201.jpg">
 </head>
 <body class="gradient-background">
-  <main class="flex items-center justify-center h-screen">
-    <section class="flex flex-col items-center p-4">
+  <main id="mainContent" class="flex items-center justify-center min-h-screen px-4">
+    <section class="flex flex-col items-center p-4 max-w-lg w-full">
       <img
         id="imageDisplay"
-        src="./images/image1.gif"
-        alt="Cute kitten with flowers"
-        class="rounded-md h-[300px] object-cover"
+        src="./images/salve 1.jpg"
+        alt="Emoji charmoso"
+        class="rounded-md drop-shadow-md bg-white/60 p-2"
       />
-      <h1 id="valentineQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4">
-        Will you be my Valentine?
+      <h1 id="encontroQuestion" class="text-4xl font-bold italic text-[#bd1e59] my-4 text-center leading-tight">
+        Bora sair comigo no fim de semana? 🍕
       </h1>
-      <div id="responseButtons" class="flex gap-4 pt-5 items-center">
+      <p id="subtexto" class="text-[#92400e] text-center mb-2 italic opacity-80">
+        (prometo não contar piada ruim... talvez)
+      </p>
+      <div id="responseButtons" class="flex gap-4 pt-5 items-center flex-wrap justify-center">
         <button
           id="yesButton"
           class="bounce inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium cursor-pointer px-4 py-2 bg-green-500 text-white transition-all duration-300 ease-in-out hover:bg-green-400 min-h-12 min-w-[75px]"
         >
-          Yes
+          Sim! 🎉
         </button>
         <button
           id="noButton"
-          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium cursor-pointer px-4 py-2 bg-red-500 text-white transition-colors hover:bg-red-700 h-12 min-w-[75px]"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xl font-medium px-4 py-2 bg-red-500 text-white transition-colors hover:bg-red-700 h-12 min-w-[75px]"
         >
-          No
+          Não
         </button>
       </div>
     </section>
   </main>
 
+  <div id="calendarModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+    <div class="calendar-overlay bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border-2 border-pink-200">
+      <div class="bg-gradient-to-r from-pink-400 to-rose-400 px-6 py-5 text-white text-center">
+        <p class="text-sm font-medium opacity-90">🗓️ Escolhe o melhor horário!</p>
+        <h2 id="calendarTitle" class="text-2xl font-bold mt-1">Fim de semana</h2>
+        <p class="text-sm mt-1 opacity-90">Marca aí antes que eu fique ansioso demais</p>
+      </div>
+      <div id="calendarDays" class="p-5 space-y-4 max-h-[60vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
   <script>
     (() => {
-      // DOM references
+      // ── PLACEHOLDERS — edite aqui depois ──────────────────
+      const CALENDAR_PLACEHOLDERS = {
+        sabado: {
+          horarios: ['[HORÁRIO 1]', '[HORÁRIO 2]', '[HORÁRIO 3]'],
+          opcoes:   ['[OPÇÃO 1]',   '[OPÇÃO 2]',   '[OPÇÃO 3]'],
+        },
+        domingo: {
+          horarios: ['[HORÁRIO 1]', '[HORÁRIO 2]', '[HORÁRIO 3]'],
+          opcoes:   ['[OPÇÃO 1]',   '[OPÇÃO 2]',   '[OPÇÃO 3]'],
+        },
+      };
+      // ─────────────────────────────────────────────────────
+
       const yesButton = document.getElementById('yesButton');
       const noButton = document.getElementById('noButton');
       const imageDisplay = document.getElementById('imageDisplay');
-      const valentineQuestion = document.getElementById('valentineQuestion');
+      const encontroQuestion = document.getElementById('encontroQuestion');
+      const subtexto = document.getElementById('subtexto');
       const responseButtons = document.getElementById('responseButtons');
+      const mainContent = document.getElementById('mainContent');
+      const calendarModal = document.getElementById('calendarModal');
+      const calendarDays = document.getElementById('calendarDays');
+      const calendarTitle = document.getElementById('calendarTitle');
 
-      // Configuration
       const GROWTH_PER_CLICK = 35;
       const FONT_GROWTH_PER_CLICK = 25;
       const MAX_NO_CLICKS = 5;
 
       const IMAGE_PATHS = [
-        './images/image1.gif',
-        './images/image2.gif',
-        './images/image3.gif',
-        './images/image4.gif',
-        './images/image5.gif',
-        './images/image6.gif',
-        './images/image7.gif',
+        './images/salve 1.jpg',
+        './images/salve 2.jpg',
+        './images/salve 3.webp',
+        './images/salve 4.webp',
+        './images/imagem 5.jpg',
+        './images/salve 3.webp',
+        './images/imagem 5.jpg',
       ];
 
       const NO_BUTTON_MESSAGES = [
-        'No',
-        'Are you sure?',
-        'Pookie please',
-        "Don't do this to me :(",
-        "You're breaking my heart",
-        "I'm gonna cry...",
+        'Não',
+        'Tem certeza?',
+        'Por favooor 🥺',
+        'Não faz isso comigo :(',
+        'Vou chorar no banho',
+        'Última chance...',
       ];
 
-      const ALT_TEXTS = [
-        'Cute kitten with flowers',
-        'Sad kitten looking up',
-        'Kitten begging',
-        'Heartbroken kitten',
-        'Crying kitten',
-        'Devastated kitten',
-        'Happy kitten celebrating',
+      const SUBTEXTOS = [
+        '(prometo não contar piada ruim... talvez)',
+        '(só um cafezinho, juro!)',
+        '(eu pago o estacionamento!)',
+        '(até aceito ir num lugar que você escolhe)',
+        '(já até escolhi a playlist)',
+        '(minha dignidade depende disso)',
       ];
 
-      // State
       let noClickCount = 0;
       let buttonHeight = 48;
       let buttonWidth = 80;
       let fontSize = 20;
 
-      noButton.addEventListener('click', () => {
+      const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+      function setImage(index) {
+        imageDisplay.src = IMAGE_PATHS[index];
+      }
+
+      function spawnThumbsDown(x, y) {
+        for (let i = 0; i < 8; i++) {
+          const el = document.createElement('span');
+          el.textContent = '👎';
+          el.className = 'thumb-down';
+          el.style.left = `${x + (Math.random() - 0.5) * 120}px`;
+          el.style.top = `${y + (Math.random() - 0.5) * 40}px`;
+          el.style.fontSize = `${1.5 + Math.random() * 1.5}rem`;
+          el.style.animationDuration = `${0.7 + Math.random() * 0.6}s`;
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 1500);
+        }
+      }
+
+      function launchRockets() {
+        for (let i = 0; i < 12; i++) {
+          setTimeout(() => {
+            const el = document.createElement('span');
+            el.textContent = '🚀';
+            el.className = 'rocket';
+            el.style.left = `${10 + Math.random() * 80}vw`;
+            el.style.bottom = '-40px';
+            el.style.fontSize = `${2 + Math.random() * 2}rem`;
+            el.style.animationDuration = `${1.2 + Math.random() * 1}s`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 2500);
+          }, i * 120);
+        }
+      }
+
+      function getNextWeekend() {
+        const today = new Date();
+        const day = today.getDay();
+        const saturday = new Date(today);
+
+        if (day === 0) saturday.setDate(today.getDate() + 6);
+        else if (day !== 6) saturday.setDate(today.getDate() + (6 - day));
+
+        const sunday = new Date(saturday);
+        sunday.setDate(saturday.getDate() + 1);
+        return [saturday, sunday];
+      }
+
+      function buildCalendar() {
+        const [saturday, sunday] = getNextWeekend();
+        calendarTitle.textContent = `${saturday.getDate()} — ${sunday.getDate()} de ${MESES[saturday.getMonth()]}`;
+        calendarDays.innerHTML = '';
+
+        const days = [
+          { date: saturday, label: 'Sábado', key: 'sabado', emoji: '📅' },
+          { date: sunday, label: 'Domingo', key: 'domingo', emoji: '🌤️' },
+        ];
+
+        days.forEach(({ date, label, key, emoji }) => {
+          const cfg = CALENDAR_PLACEHOLDERS[key];
+          const card = document.createElement('div');
+          card.className = 'rounded-2xl border-2 border-pink-100 bg-pink-50/50 p-4';
+
+          card.innerHTML = `
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-2xl">${emoji}</span>
+              <div>
+                <p class="font-bold text-[#bd1e59]">${label}</p>
+                <p class="text-sm text-pink-600">${date.getDate()} de ${MESES[date.getMonth()]}</p>
+              </div>
+            </div>
+          `;
+
+          cfg.horarios.forEach((horario, i) => {
+            const row = document.createElement('div');
+            row.className = 'p-3 mb-2 last:mb-0 rounded-xl border-2 border-pink-200 bg-white';
+            row.innerHTML = `
+              <span class="block font-bold text-pink-500 text-sm">${horario}</span>
+              <span class="block text-gray-600 text-sm mt-0.5">${cfg.opcoes[i] || '[OPÇÃO]'}</span>
+            `;
+            card.appendChild(row);
+          });
+
+          calendarDays.appendChild(card);
+        });
+      }
+
+      noButton.addEventListener('click', (e) => {
+        spawnThumbsDown(e.clientX, e.clientY);
+        mainContent.classList.add('shake');
+        setTimeout(() => mainContent.classList.remove('shake'), 350);
+
         if (noClickCount >= MAX_NO_CLICKS) return;
 
         noClickCount++;
+        setImage(noClickCount);
+        subtexto.textContent = SUBTEXTOS[noClickCount] || SUBTEXTOS[SUBTEXTOS.length - 1];
 
-        // Update image and alt text
-        imageDisplay.src = IMAGE_PATHS[noClickCount];
-        imageDisplay.alt = ALT_TEXTS[noClickCount];
-
-        // Grow the "Yes" button to make it harder to ignore
         buttonHeight += GROWTH_PER_CLICK;
         buttonWidth += GROWTH_PER_CLICK;
         fontSize += FONT_GROWTH_PER_CLICK;
@@ -134,27 +294,27 @@
         yesButton.style.height = `${buttonHeight}px`;
         yesButton.style.width = `${buttonWidth}px`;
         yesButton.style.fontSize = `${fontSize}px`;
-
-        // Update "No" button text with increasingly desperate messages
         noButton.textContent = NO_BUTTON_MESSAGES[noClickCount];
       });
 
       yesButton.addEventListener('click', () => {
-        imageDisplay.src = IMAGE_PATHS[IMAGE_PATHS.length - 1];
-        imageDisplay.alt = ALT_TEXTS[ALT_TEXTS.length - 1];
-        valentineQuestion.textContent = 'Yayyy!! :3';
+        setImage(6);
+        encontroQuestion.textContent = 'Ebaa!! Vamos marcar então! 🎊';
+        subtexto.textContent = 'Escolhe o horário perfeito aí embaixo 👇';
         responseButtons.style.display = 'none';
 
-        // Heart-shaped confetti for a valentine theme
-        const heart = confetti.shapeFromPath({
-          path: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
-        });
+        launchRockets();
 
-        const defaults = { spread: 360, ticks: 100, gravity: 0, decay: 0.94, startVelocity: 20, shapes: [heart], colors: ['#ff69b4', '#ff1493', '#ff6b81', '#e84393'] };
+        setTimeout(() => {
+          buildCalendar();
+          calendarModal.classList.remove('hidden');
+        }, 600);
+      });
 
-        confetti({ ...defaults, particleCount: 50, scalar: 2 });
-        confetti({ ...defaults, particleCount: 25, scalar: 3 });
-        confetti({ ...defaults, particleCount: 10, scalar: 4 });
+      calendarModal.addEventListener('click', (e) => {
+        if (e.target === calendarModal) {
+          calendarModal.classList.add('hidden');
+        }
       });
     })();
   </script>
