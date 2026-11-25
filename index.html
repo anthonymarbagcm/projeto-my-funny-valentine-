@@ -311,7 +311,7 @@
     <div class="calendar-overlay bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border-2 border-pink-200">
       <div class="bg-gradient-to-r from-pink-400 to-rose-400 px-6 py-5 text-white text-center">
         <p class="text-sm font-medium opacity-90" id="calendarSubtitle">🗓️ Escolhe o dia!</p>
-        <h2 id="calendarTitle" class="text-2xl font-bold mt-1">7, 8 ou 9 de ago</h2>
+        <h2 id="calendarTitle" class="text-2xl font-bold mt-1">27, 28 ou 29 de nov</h2>
         <p class="text-sm mt-1 opacity-90" id="calendarHint">Marca aí antes que eu fique ansioso demais</p>
       </div>
       <div id="calendarDays" class="p-5 space-y-3 max-h-[55vh] overflow-y-auto"></div>
@@ -336,9 +336,9 @@
   <script>
     (() => {
       const DATAS = [
-        { dia: 7, label: 'Sexta',  emoji: '🌙' },
-        { dia: 8, label: 'Sábado', emoji: '📅' },
-        { dia: 9, label: 'Domingo', emoji: '🌤️' },
+        { dia: 27, label: 'Sexta',  emoji: '🌙' },
+        { dia: 28, label: 'Sábado', emoji: '📅' },
+        { dia: 29, label: 'Domingo', emoji: '🌤️' },
       ];
 
       const CATEGORIAS = [
@@ -389,10 +389,16 @@
         },
       ];
 
-      const OPCAO_SECRETA = {
-        nome: 'Balaios Motoclube — Sede',
-        descricao: 'Invadir o motoclube, jogar arcade e sinuca enquanto vê os quadros de gente maluca que passou por lá.',
-      };
+      const OPCOES_SECRETAS = [
+        {
+          nome: 'Role na Praça Espanha',
+          descricao: 'Dar uma volta na Praça Espanha, bater perna e curtir o clima da praça.',
+        },
+        {
+          nome: 'Centro, brechos e pastel com caldo de cana',
+          descricao: 'Andar pelo centro, ver brechos e terminar num restaurante legal com pastel e caldo de cana finalmente.',
+        },
+      ];
 
       const yesButton = document.getElementById('yesButton');
       const noButton = document.getElementById('noButton');
@@ -547,7 +553,7 @@
 
       function showPendingChoice(dia, label, nome) {
         pendingChoice = { dia, label, nome };
-        pendingSelection.textContent = `${label}, ${dia} de ago — ${nome}`;
+        pendingSelection.textContent = `${label}, ${dia} de nov — ${nome}`;
         confirmFooter.classList.remove('hidden');
         confirmMessage.classList.add('hidden');
         calendarHint.textContent = 'Confirma aí embaixo!';
@@ -577,7 +583,7 @@
         setTimeout(() => {
           heartsOverlay.classList.add('hidden');
           encontroQuestion.textContent = 'Combinado!! Te vejo lá 💕';
-          subtexto.textContent = `${choice.label}, ${choice.dia} de ago — ${choice.nome}`;
+          subtexto.textContent = `${choice.label}, ${choice.dia} de nov — ${choice.nome}`;
         }, 4000);
       }
 
@@ -592,7 +598,7 @@
             _subject: '💕 Alguém confirmou o encontro!',
             _template: 'table',
             _captcha: 'false',
-            Dia: `${choice.label}, ${choice.dia} de agosto de 2026`,
+            Dia: `${choice.label}, ${choice.dia} de novembro de 2026`,
             Lugar: choice.nome,
             Confirmado_em: new Date().toLocaleString('pt-BR'),
           }),
@@ -618,7 +624,7 @@
         }
 
         confirmFooter.classList.add('hidden');
-        confirmMessage.textContent = `Marcado! ${pendingChoice.label}, ${pendingChoice.dia} de ago — ${pendingChoice.nome} 🎉`;
+        confirmMessage.textContent = `Marcado! ${pendingChoice.label}, ${pendingChoice.dia} de nov — ${pendingChoice.nome} 🎉`;
         confirmMessage.classList.remove('hidden');
         launchHeartCelebration();
       });
@@ -627,7 +633,7 @@
         selectedData = null;
         hideConfirmFooter();
         calendarSubtitle.textContent = '🗓️ Escolhe o dia!';
-        calendarTitle.textContent = '7, 8 ou 9 de ago';
+        calendarTitle.textContent = '27, 28 ou 29 de nov';
         calendarHint.textContent = 'Marca aí antes que eu fique ansioso demais';
         calendarDays.innerHTML = '';
 
@@ -640,7 +646,7 @@
               <span class="text-2xl">${emoji}</span>
               <div>
                 <p class="font-bold text-[#bd1e59] text-lg">${label}</p>
-                <p class="text-pink-500 text-sm">${dia} de agosto</p>
+                <p class="text-pink-500 text-sm">${dia} de novembro</p>
               </div>
             </div>
           `;
@@ -658,7 +664,7 @@
         selectedData = { dia, label };
         hideConfirmFooter();
         calendarSubtitle.textContent = '📍 Onde vamos?';
-        calendarTitle.textContent = `${label}, ${dia} de ago`;
+        calendarTitle.textContent = `${label}, ${dia} de nov`;
         calendarHint.textContent = 'Abre um tópico e escolhe o lugar';
         calendarDays.innerHTML = '';
 
@@ -712,19 +718,47 @@
           calendarDays.appendChild(topic);
         });
 
-        const secretBtn = document.createElement('button');
-        secretBtn.type = 'button';
-        secretBtn.className = 'pick-card secret w-full text-left p-4 rounded-xl border-2 border-pink-200 bg-pink-50/50 mt-1';
-        secretBtn.innerHTML = `
-          <p class="font-bold text-[#bd1e59]">🤫 Opção secreta — ${OPCAO_SECRETA.nome}</p>
-          <p class="text-gray-600 text-sm mt-1 leading-relaxed">${OPCAO_SECRETA.descricao}</p>
+        // Tópico secreto com as duas opções agrupadas
+        const secretTopic = document.createElement('div');
+        secretTopic.className = 'topic-card';
+
+        const secretHeader = document.createElement('button');
+        secretHeader.type = 'button';
+        secretHeader.className = 'topic-header';
+        secretHeader.innerHTML = `
+          <span class="font-bold text-[#bd1e59]">🤫 Secreto</span>
+          <span class="topic-chevron">▼</span>
         `;
-        secretBtn.addEventListener('click', () => {
-          document.querySelectorAll('.place-option, .pick-card.secret').forEach((c) => c.classList.remove('selected'));
-          secretBtn.classList.add('selected');
-          selectPlace(dia, label, OPCAO_SECRETA.nome);
+
+        const secretBody = document.createElement('div');
+        secretBody.className = 'topic-body';
+        secretBody.innerHTML = `<p class="topic-geral">Opções especiais que não aparecem para qualquer um.</p>`;
+
+        OPCOES_SECRETAS.forEach((opcao) => {
+          const opt = document.createElement('div');
+          opt.className = 'place-option';
+          opt.innerHTML = `
+            <p class="font-bold text-[#bd1e59] text-sm">${opcao.nome}</p>
+            <p class="text-gray-600 text-sm mt-1 leading-relaxed">${opcao.descricao}</p>
+          `;
+          opt.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.place-option').forEach((c) => c.classList.remove('selected'));
+            opt.classList.add('selected');
+            selectPlace(dia, label, opcao.nome);
+          });
+          secretBody.appendChild(opt);
         });
-        calendarDays.appendChild(secretBtn);
+
+        secretHeader.addEventListener('click', () => {
+          const wasOpen = secretTopic.classList.contains('open');
+          document.querySelectorAll('.topic-card').forEach((t) => t.classList.remove('open'));
+          if (!wasOpen) secretTopic.classList.add('open');
+        });
+
+        secretTopic.appendChild(secretHeader);
+        secretTopic.appendChild(secretBody);
+        calendarDays.appendChild(secretTopic);
       }
 
       function buildCalendar() {
@@ -765,13 +799,14 @@
         }, 600);
       });
 
-      calendarModal.addEventListener('click', (e) => {
-        if (e.target === calendarModal) {
-          calendarModal.classList.add('hidden');
-        }
-      });
+      // Removido: fechar ao clicar fora travaria o modal sem jeito de reabrir
+      // calendarModal.addEventListener('click', (e) => {
+      //   if (e.target === calendarModal) {
+      //     calendarModal.classList.add('hidden');
+      //   }
+      // });
     })();
   </script>
-  <img src="./images/julian.jpg" alt="" class="easter-egg" title="🎸">
+  <img src="./images/shiryuuu.jpg" alt="" class="easter-egg" title="🎸">
 </body>
 </html>
